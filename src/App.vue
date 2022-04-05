@@ -13,7 +13,7 @@
 
     <!-- todo 목록창 -->
     <!-- 여기 todoList라는 이름이 todoList.vue 파일 props의 이름과 같음 -->
-    <TodoList v-bind:todoList="todos"/>
+    <TodoList v-bind:todoList="todos" v-on:toggle-todo="toggleEvent" v-on:delete-todo="deleteTodo"/>
 
   </div>
 </template>
@@ -60,6 +60,10 @@
         // });
       }
 
+      const toggleEvent = (index) => {
+        todos.value[index].complete = !todos.value[index].complete;
+      }
+
       const deleteTodo = (index) => {
         console.log('지우기' + index);
         // 인덱스 번호에 해당하는 것을 지운다는 뜻.
@@ -75,6 +79,7 @@
       return {
         todos,
         deleteTodo,
+        toggleEvent,
         // todoStyle,
         todoInsert
       }

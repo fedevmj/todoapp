@@ -24,14 +24,16 @@
     import {ref} from 'vue';
     // js 코딩 장소
     export default {
+        emits: ['todo-insert'],
         // props와 context로 상위 컴포넌트(app.vue)와 연결
         // context는 app.vue 그 자체를 가리킴
-        setup(props, context) {
+        // 이 자료에는 context 중에서도 {emit}만 쓴다고 돼 있고 아래에도 context.emit 아니라 emit만 적혀있음
+        setup(props, {emit}) {
             // html에서 사용할 내용들
             // 추가할 할일
             const add_todos = ref('');
             const hasError = ref(false);
-            // 버튼 클릭 시 처리
+            // 버튼 클릭 시 처리$
             const onSubmit = () => {
                 // 내용이 입력됐는지 아닌지 구분
                 if (add_todos.value === '') {
@@ -43,7 +45,7 @@
                     // 할일의 내용을 배열로 추가.
                     // 이때 상위 컴포넌트로 전달.
                     // context.emit('이벤트', {데이터});
-                    context.emit('todo-insert', {
+                    emit('todo-insert', {
                         id: Date.now(),
                         subject: add_todos.value,
                         complete: false

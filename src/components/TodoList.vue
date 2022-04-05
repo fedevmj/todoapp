@@ -2,11 +2,12 @@
 
     <!-- todo 목록창 -->
     <!-- props로 todoList란 이름을 받았기 때문에 원래는 v-for 구문에 in todos 였는데 이제 props니까 in todoList -->
+    <!-- 중복 안 되게 id 값도 연결해 준다. -->
     <div v-for="(keys, index) in todoList" v-bind:key="keys.id" class="card mt-2">
 
         <div class="card-body pd-2 d-flex">
             <div class="form-check flex-grow-1">
-                <input type="checkbox" class="form-check-input" v-model="keys.complete" v-bind:id="keys.id">
+                <input type="checkbox" class="form-check-input" v-bind:value="keys.complete" v-bind:id="keys.id" v-on:change="toggleTodo(index)">
 
                 <!-- "{finished:keys.complete}"를 객체로 넣는 것은 문법이다. -->
                 <!-- keys.complete 대신 true/false 적어도 okay. -->
@@ -39,10 +40,21 @@
             }
         },
 
-        setup() {
+        emits: ['toggle-todo', 'delete-todo'],
+
+        setup(props, context) {
+            const toggleTodo = (index) => {
+                console.log(index);
+                context.emit('toggle-todo', index);
+            };
+
+            const deleteTodo = (index) => {
+                context.emit('delete-todo', index)
+            };
 
             return {
-
+                toggleTodo,
+                deleteTodo
             }
 
         }
