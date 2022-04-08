@@ -2,7 +2,7 @@
     <!-- html 태그 작성 장소 -->
     <!-- 입력창 -->
     <!-- .prevent는 stop().propagation과 같다. -->
-    <form action="" v-on:submit.prevent="onSubmit">
+    <form action="" @:submit.prevent="onSubmit">
         <div class="d-flex">
             <!-- button에 form-control 넣으면 자동으로 focus/blur 기능 생긴다. -->
             <div class="flex-grow-1 mr-2">

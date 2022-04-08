@@ -1,17 +1,24 @@
 <template>
   <div class="container">
 
-    <h1>TODO LIST</h1>
+    <!-- Title.vue로 이동 -->
+    <!-- <h1>TODO LIST</h1> -->
+    <AppTitle :apptitle="today" />
+
     <!-- 할일 검색 입력창 -->
     <input class="form-control" v-model="searchText" type="text" placeholder="Search Todo list">
-    <div class="red">{{error}}</div>
+    
+    <!-- 에러안내창 -->
+    <ErrorBox :errmessage="error"/>
+    <!-- <div class="red">{{error}}</div> -->
+
     <!-- <input class="form-control" v-bind:todos="filteredTodo" type="text" placeholder="Search Todo List"> -->
     <hr />
 
     <!-- 할일 추가 입력창 -->
     <!-- 3번)) 태그 이름으로 입력 -->
     <!-- TodoSimpelForm에서 발생한 이벤트는 이렇게 받고 props는 TodoList.Vue참고 -->
-    <TodoSimpleForm v-on:todo-insert="todoInsert" />
+    <TodoSimpleForm @todo-insert="todoInsert" />
     <!-- 원래 아래처럼 쓰는 것이 기본이지만 줄여서 <컴포넌트이름/> 이렇게만 써도 됨. -->
     <!-- <TodoSimpleForm></TodoSimpleForm> -->
 
@@ -21,28 +28,14 @@
     <!-- todo 목록창 -->
     <!-- 여기 todoList라는 이름이 todoList.vue 파일 props의 이름과 같음 -->
     <!-- [4/8] 원래 v-bind:todoList="filteredTodo"있었는데 이렇게 만들어서 쓸 필요 x API 쓰면 되기 때문에 다시 v-bind:todoList="todos"로 변경 -->
-    <TodoList v-bind:todoList="todos" v-on:toggle-todo="toggleEvent" v-on:delete-todo="deleteTodo" />
+    <TodoList :todoList="todos" @toggle-todo="toggleEvent" @delete-todo="deleteTodo" />
+    <!-- v-bind:는 : / v-on:은 @ -->
 
   <hr>
 
     <!-- pagination from bootstrap -->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item" v-show="currentPage !== 1">
-          <a class="page-link" v-on:click="getTodos(currentPage - 1)" href="#" style="cursor:pointer">Previous</a>
-        </li>
-
-        <li v-for = "keys in numbefOfpages" v-bind:key ="keys"
-            v-bind:class="currentPage === keys ? 'active': '' " class="page-item">
-            <a class="page-link" v-on:click="getTodos(keys)" href="#" 
-            style="cursor:pointer">{{keys}}</a>
-        </li>
-
-        <li class="page-item" v-show="currentPage !== numbefOfpages" >
-          <a class="page-link" v-on:click="getTodos(currentPage + 1)" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <!-- AppPagination.vue로 이동 -->
+    <AppPagination :currentpage="currentPage" :pagenumber="numberfOfpages" @showPage="getTodos"/>
 
   </div>
 </template>
@@ -64,6 +57,9 @@
 
   // 1번)) 컴포넌트를 import 한다.
   // 0번)) TodoSimpleForm(통상적으로 대문자로 시작)을 component폴더에 만듦.
+  import AppTitle from './components/AppTitle.vue';
+  import ErrorBox from './components/ErrorBox.vue';
+  import AppPagination from './components/AppPagination.vue';
   import TodoSimpleForm from './components/TodoSimpleForm.vue';
   import TodoList from './components/TodoList.vue';
   import axios from 'axios'
@@ -74,13 +70,17 @@
     // 2번)) components에 객체로 import한 vue 파일 이름을 넣는다.
     components: {
       // 컴포넌트 이름은 html 태그처럼 사용
+      AppTitle,
+      ErrorBox,
+      AppPagination,
       TodoSimpleForm,
-      TodoList
+      TodoList,
     },
 
     setup() {
 
-      //computed 샘플
+      // 타이틀
+      const today = ref('Todo List');
 
       // 할일 목록(배열) 저장
       const todos = ref([]);
@@ -96,7 +96,7 @@
       // 현재 보여주는 페이지 번호
       const currentPage = ref(1);
       // 총페이지 숫자
-      const numbefOfpages =computed( () => {
+      const numberfOfpages =computed( () => {
         // 총 게시물 / 페이지 당 출력 수 (반올림)
         return Math.ceil(totalTodos.value / limit);
       })
@@ -105,11 +105,11 @@
       // watchEffect( () => {
       //   console.log('currentPage', currentPage.value);
       //   console.log('totalTodos', totalTodos.value);
-      //   console.log('numbefOfpages', numbefOfpages.value);
+      //   console.log('numberfOfpages', numberfOfpages.value);
       //   console.log('================')
       // });
 
-      // watch([currentPage, numbefOfpages], (present, previous) => {
+      // watch([currentPage, numberfOfpages], (present, previous) => {
       //   console.log(present, previous);
       //   실행하면 객체가 가로로 두 개가 나오는데 이때 오른쪽이 watch 실행 전 / 왼쪽값이 watch 실행된 값
       // });
@@ -163,7 +163,7 @@
           totalTodos.value = res.headers['x-total-count'];
 
           // 게시물 지우면 현재 페이지에 남아있고 개수 모자라면 페이지수 줄어들게 하는 코드
-          if(numbefOfpages.value < currentPage.value) {
+          if(numberfOfpages.value < currentPage.value) {
             getTodos(currentPage.value - 1);
             return;
           }
@@ -286,8 +286,10 @@
         // filteredTodo,
         getTodos,
         totalTodos,
-        numbefOfpages,
+        numberfOfpages,
         currentPage,
+        
+        today,
       }
     }
   }
