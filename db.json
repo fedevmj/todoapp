@@ -2,7 +2,7 @@
   "todos": [
     {
       "subject": "공부하기",
-      "complete": true,
+      "complete": false,
       "id": 1
     },
     {
@@ -14,6 +14,56 @@
       "subject": "클론코드하기",
       "complete": false,
       "id": 3
+    },
+    {
+      "subject": "1",
+      "complete": false,
+      "id": 4
+    },
+    {
+      "subject": "3",
+      "complete": false,
+      "id": 6
+    },
+    {
+      "subject": "4",
+      "complete": false,
+      "id": 7
+    },
+    {
+      "subject": "5",
+      "complete": false,
+      "id": 8
+    },
+    {
+      "subject": "6",
+      "complete": false,
+      "id": 9
+    },
+    {
+      "subject": "7",
+      "complete": false,
+      "id": 10
+    },
+    {
+      "subject": "기차타기!",
+      "complete": false,
+      "id": 11
+    },
+    {
+      "subject": "재밌게 놀기!",
+      "complete": false,
+      "id": 12
+    },
+    {
+      "subject": "술마시기!",
+      "complete": false,
+      "id": 13
+    },
+    {
+      "subject": "점심먹기!",
+      "complete": false,
+      "id": 14
     }
   ]
 }

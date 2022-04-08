@@ -20,7 +20,29 @@
 
     <!-- todo 목록창 -->
     <!-- 여기 todoList라는 이름이 todoList.vue 파일 props의 이름과 같음 -->
-    <TodoList v-bind:todoList="filteredTodo" v-on:toggle-todo="toggleEvent" v-on:delete-todo="deleteTodo" />
+    <!-- [4/8] 원래 v-bind:todoList="filteredTodo"있었는데 이렇게 만들어서 쓸 필요 x API 쓰면 되기 때문에 다시 v-bind:todoList="todos"로 변경 -->
+    <TodoList v-bind:todoList="todos" v-on:toggle-todo="toggleEvent" v-on:delete-todo="deleteTodo" />
+
+  <hr>
+
+    <!-- pagination from bootstrap -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" v-show="currentPage !== 1">
+          <a class="page-link" v-on:click="getTodos(currentPage - 1)" href="#" style="cursor:pointer">Previous</a>
+        </li>
+
+        <li v-for = "keys in numbefOfpages" v-bind:key ="keys"
+            v-bind:class="currentPage === keys ? 'active': '' " class="page-item">
+            <a class="page-link" v-on:click="getTodos(keys)" href="#" 
+            style="cursor:pointer">{{keys}}</a>
+        </li>
+
+        <li class="page-item" v-show="currentPage !== numbefOfpages" >
+          <a class="page-link" v-on:click="getTodos(currentPage + 1)" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
 
   </div>
 </template>
@@ -30,7 +52,10 @@
   // 만들어진 js 라이브러리를 가져옴.
   import {
     ref,
-    computed
+    computed,
+    watch,
+    // reactive
+    // watchEffect
   } from 'vue';
   //ref는 여기 작성 내용을 실시간으로 반영하려고.
   //ref를 쓰면 전달되는 매개변수를 { key(이 자리에는 무조건 value라고 온다) : value(괄호 안 변수) }로 만들어줌.
@@ -63,13 +88,86 @@
       // 에러메시지
       const error = ref('');
 
+      // pagination 관련
+      // 전체 todos 개수 필요
+      const totalTodos = ref(0);
+      // 한 화면당 보여줄 todos : 변경되지 않을 예정이라 ref로 감싸지 x
+      const limit = 5;
+      // 현재 보여주는 페이지 번호
+      const currentPage = ref(1);
+      // 총페이지 숫자
+      const numbefOfpages =computed( () => {
+        // 총 게시물 / 페이지 당 출력 수 (반올림)
+        return Math.ceil(totalTodos.value / limit);
+      })
+
+      //ref, reactive, computed, props 등 변경될 때마다 실행돼 값의 변화를 체크
+      // watchEffect( () => {
+      //   console.log('currentPage', currentPage.value);
+      //   console.log('totalTodos', totalTodos.value);
+      //   console.log('numbefOfpages', numbefOfpages.value);
+      //   console.log('================')
+      // });
+
+      // watch([currentPage, numbefOfpages], (present, previous) => {
+      //   console.log(present, previous);
+      //   실행하면 객체가 가로로 두 개가 나오는데 이때 오른쪽이 watch 실행 전 / 왼쪽값이 watch 실행된 값
+      // });
+
+      // const obj = reactive({
+      //   age: 20
+      // })
+
+      // watch( () => obj.age, (present, previous) => {
+      //   console.log(present, previous)
+      // } );
+
+      // obj.age = 30;
+
+            // 할일 검색 관련 
+      const searchText = ref('');
+      // 검색에 따른 목록을 갱신해 주는 기능을 생성
+      // const filteredTodo = computed(() => {
+      //   만약에 searchText 와 동일한 todos 목록에 있는지를 검사해서
+      //   화면에 출력을 할 예정임.
+      //   searchTxt.value = ''
+      //   if (searchText.value) {
+
+      //     return todos.value.filter((todokeyword) => {
+      //       // aaa 객체의 제목에 포함이 되어 있는가? 검사
+      //       return todokeyword.subject.includes(searchText.value);
+      //     });
+
+      //   }
+      //   return todos.value;
+      // });
+
+      watch(searchText, () => {
+        getTodos(1)
+      })
+
       // DB에서 자료 불러오기
-      const getTodos = async () => {
+      const getTodos = async (page = currentPage.value) => {
         error.value = '';
+        //전달된 값을 현재 페이지로 받아들인다.
+        currentPage.value = page;
         try {
           //서버에 자료 요청 진행 후 결과를 res로 받는다. 
-          const res = await axios.get("http://localhost:3000/todos");
+          // &_ 쓰는 것 잊어버리지 말 것!
+          const res = await axios.get(`http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`);
           // response가 될 때 res라는 객체의 .data를 화면에 보여줄 목록으로 출력.
+          //todos뒤에 ?부터는 json server API에 정해져있다.
+          // console.log(res.headers);
+          // 총 todos 개수 파악
+          // x-total-count는 console.log(res.headers)찍었을 때 웹브라우저f12 network / fetch/xhr 에 들어가면 나온다.
+          totalTodos.value = res.headers['x-total-count'];
+
+          // 게시물 지우면 현재 페이지에 남아있고 개수 모자라면 페이지수 줄어들게 하는 코드
+          if(numbefOfpages.value < currentPage.value) {
+            getTodos(currentPage.value - 1);
+            return;
+          }
+
           todos.value = res.data;
         } catch (err) {
           console.log(err);
@@ -82,21 +180,23 @@
       getTodos();
 
 
-
       // TodoSimpleForm에서 todo-insert로 전달된 객체를 처리해주는 콜백함수
       const todoInsert = async (add_todos) => {
 
         error.value = '';
 
         try {
-          const res = await axios.post('http://localhost:3000/todos', {
+          // const res = 
+          await axios.post('http://localhost:3000/todos', {
             // id는 자동으로 생성
             // id: ,
             subject: add_todos.subject,
             complete: add_todos.complete
           })
 
-          todos.value.push(res.data)
+          // axios.get과 같은 이유
+          // todos.value.push(res.data)
+          getTodos(1);
 
         } catch (err) {
           console.log(err);
@@ -126,28 +226,28 @@
 
       }
 
-      const toggleEvent = async(index) => {
+      const toggleEvent = async (index) => {
         // todos.value[index].complete = !todos.value[index].complete;
 
         //complete 상태(true or false) 업데이트하기
         // id를 통해서 업데이트
         error.value = '';
         const id = todos.value[index].id;
-        try{
+        try {
           // 서버 DB 업데이트
           await axios.patch('http://localhost:3000/todos/' + id, {
             complete: !todos.value[index].complete
           });
-        // 웹브라우저상의 todo 화면 표현
-        todos.value[index].complete = !todos.value[index].complete
+          // 웹브라우저상의 todo 화면 표현
+          todos.value[index].complete = !todos.value[index].complete
 
-        }catch(err){
+        } catch (err) {
           console.log(err);
           error.value = "업데이트에 실패했습니다.";
         }
       }
 
-      const deleteTodo = async(index) => {
+      const deleteTodo = async (index) => {
 
         error.value = '';
 
@@ -160,45 +260,34 @@
         const id = todos.value[index].id;
         console.log(id);
 
-        try{
-          await axios.delete('http://localhost:3000/todos/' +id);
+        try {
+          await axios.delete('http://localhost:3000/todos/' + id);
           // 뒤에 id 안 적으면 todos 전체가 삭제돼 버리니 주의할 것.
           // todos 뒤에 슬래시(/) 안 넣으면 404 에러 발생.
-          todos.value.splice(index, 1);
-        }catch(err){
+
+          // getTodos(1)은 데이터 호출.
+          getTodos(currentPage.value);
+          // todos.value.splice(index, 1);
+          // slice는 직접 목록 관리하는 것. 
+        } catch (err) {
           console.log(err);
           error.value = "삭제에 실패했습니다."
         }
       }
 
-      // 할일 검색 관련 
-      const searchText = ref('');
-      // 검색에 따른 목록을 갱신해 주는 기능을 생성
-      const filteredTodo = computed(() => {
-        // 만약에 searchText 와 동일한 todos 목록에 있는지를 검사해서
-        // 화면에 출력을 할 예정임.
-        // searchTxt.value = ''
-        if (searchText.value) {
-
-          return todos.value.filter((todokeyword) => {
-            // aaa 객체의 제목에 포함이 되어 있는가? 검사
-            return todokeyword.subject.includes(searchText.value);
-          });
-
-        }
-        return todos.value;
-      });
-
       return {
-
+        // html에 쓰기 위해서 return함.
         todos,
         deleteTodo,
         toggleEvent,
         error,
         todoInsert,
         searchText,
-        filteredTodo,
-        getTodos
+        // filteredTodo,
+        getTodos,
+        totalTodos,
+        numbefOfpages,
+        currentPage,
       }
     }
   }

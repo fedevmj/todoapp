@@ -7,7 +7,7 @@
 
         <div class="card-body pd-2 d-flex">
             <div class="form-check flex-grow-1">
-                <input type="checkbox" class="form-check-input" v-bind:value="keys.complete" v-bind:id="keys.id" v-on:change="toggleTodo(index)">
+                <input type="checkbox" class="form-check-input" v-bind:checked="keys.complete" v-bind:id="keys.id" v-on:change="toggleTodo(index)">
 
                 <!-- "{finished:keys.complete}"를 객체로 넣는 것은 문법이다. -->
                 <!-- keys.complete 대신 true/false 적어도 okay. -->
