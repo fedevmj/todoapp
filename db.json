@@ -62,7 +62,7 @@
     },
     {
       "subject": "점심먹기!",
-      "complete": false,
+      "complete": true,
       "id": 14
     }
   ]
