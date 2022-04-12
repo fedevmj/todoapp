@@ -13,7 +13,9 @@
   </nav>
 
   <!-- 라우터 화면 보여주기 -->
+  <div class="container">
   <router-view />
+  </div>
 
 </template>
 

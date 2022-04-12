@@ -1,23 +1,13 @@
 {
   "todos": [
     {
-      "subject": "공부하기",
-      "complete": false,
-      "id": 1
-    },
-    {
-      "subject": "프로필만들기",
-      "complete": false,
-      "id": 2
-    },
-    {
       "subject": "클론코드하기",
       "complete": false,
       "id": 3
     },
     {
       "subject": "1",
-      "complete": false,
+      "complete": true,
       "id": 4
     },
     {
@@ -26,42 +16,42 @@
       "id": 6
     },
     {
-      "subject": "4",
-      "complete": false,
+      "subject": "\b웹디실기연습",
+      "complete": true,
       "id": 7
     },
     {
-      "subject": "5",
+      "subject": "Vue.js 복습하기",
       "complete": false,
       "id": 8
     },
     {
-      "subject": "6",
+      "subject": "\b체크리스트만들기",
       "complete": false,
       "id": 9
     },
     {
-      "subject": "7",
-      "complete": false,
+      "subject": "포폴디자인수정",
+      "complete": true,
       "id": 10
     },
     {
-      "subject": "기차타기!",
+      "subject": "부트스트랩 공부하기",
       "complete": false,
       "id": 11
     },
     {
-      "subject": "재밌게 놀기!",
+      "subject": "열심히 공부하기",
       "complete": false,
       "id": 12
     },
     {
-      "subject": "술마시기!",
+      "subject": "술그만마시기!",
       "complete": false,
       "id": 13
     },
     {
-      "subject": "점심먹기!",
+      "subject": "점심 맛있게 먹기!  먹자!",
       "complete": true,
       "id": 14
     }

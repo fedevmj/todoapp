@@ -1,7 +1,7 @@
 <template>
 
   <!-- 라우터 화면 보여주기 -->
-  <router-view />  
+  <!-- <router-view />   -->
 
 
 <div class="container">
