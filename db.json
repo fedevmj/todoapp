@@ -6,12 +6,12 @@
       "id": 3
     },
     {
-      "subject": "1",
+      "subject": "오디오어학당듣기",
       "complete": true,
       "id": 4
     },
     {
-      "subject": "3",
+      "subject": "집청소하기",
       "complete": false,
       "id": 6
     },
@@ -21,7 +21,7 @@
       "id": 7
     },
     {
-      "subject": "Vue.js 복습하기",
+      "subject": "Vue.js 강의듣기",
       "complete": false,
       "id": 8
     },
@@ -31,28 +31,25 @@
       "id": 9
     },
     {
-      "subject": "포폴디자인수정",
-      "complete": true,
-      "id": 10
-    },
-    {
       "subject": "부트스트랩 공부하기",
       "complete": false,
       "id": 11
     },
     {
-      "subject": "열심히 공부하기",
+      "subject": "효율적으로 공부하기",
       "complete": false,
       "id": 12
     },
     {
-      "subject": "술그만마시기!",
+      "subject": "\b고양이들이랑 재밌게 놀기!",
       "complete": false,
+      "body": "신나고 즐겁게 행복하게 놀기!",
       "id": 13
     },
     {
-      "subject": "점심 맛있게 먹기!  먹자!",
+      "subject": "저녁먹고 설거지하기",
       "complete": true,
+      "body": "저녁 맛있게 먹기!",
       "id": 14
     }
   ]

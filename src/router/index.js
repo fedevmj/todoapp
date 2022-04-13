@@ -5,6 +5,7 @@ import TodosIndex from '../pages/todos/TodosIndex.vue';
 import AboutIndex from '../pages/AboutIndex.vue';
 import ProfileIndex from '../pages/ProfileIndex.vue';
 import Todo from '../pages/todos/_id.vue';
+import TodoCreate from '../pages/todos/TodoCreate.vue';
 // vue에서 화면을 연결하는 경우 활용
 const router = createRouter({
     // 뒤로가기 기능
@@ -34,6 +35,11 @@ const router = createRouter({
             path: '/todos/:id',
             name: 'Todo',
             component: Todo
+        },
+        {
+            path: '/todos/create',
+            name: 'TodoCreate',
+            component: TodoCreate
         }
     ]
 });

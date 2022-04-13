@@ -1,12 +1,15 @@
 <template>
 
-  <!-- 라우터 화면 보여주기 -->
-  <!-- <router-view />   -->
-
-
 <div class="container">
 
-    <AppTitle :apptitle="today" />
+    <!-- 타이틀 -->
+    <div class="d-flex justify-content-between mt-3 mb-3">
+        <AppTitle :apptitle="today" />
+        <button 
+        class="btn btn-primary btn-sm"
+        @click="moveToCreate"
+        >Todo 등록</button>
+    </div>
 
     <!-- 할일 검색 입력창 -->
     <input class="form-control" v-model="searchText" type="text" placeholder="Search Todo list"
@@ -17,7 +20,7 @@
     <hr />
 
     <!-- 할일 추가 입력창 -->
-    <TodoSimpleForm @todo-insert="todoInsert" />
+    <!-- <TodoSimpleForm @todo-insert="todoInsert" /> -->
 
     <!-- 목록 없음 안내창 -->
     <div class="blue" v-show="!todos.length">생성된 todo 목록이 없습니다.</div>
@@ -26,8 +29,11 @@
     <TodoList :todoList="todos" @toggle-todo="toggleEvent" @delete-todo="deleteTodo" />
 
     <hr>
-
+    <!-- 페이지네이션 -->
     <AppPagination :currentpage="currentPage" :pagenumber="numberfOfpages" @showPage="getTodos" />
+
+    <!-- 안내창 -->
+    <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
 
 </div>
 </template>
@@ -37,26 +43,39 @@
         ref,
         computed,
         watch,
+        // onUnmounted
     } from 'vue';
 
     //src 폴더인 경우에만 @을 통해서 접근이 가능하다.
     import AppTitle from '@/components/AppTitle.vue';
     import ErrorBox from '@/components/ErrorBox.vue';
     import AppPagination from '@/components/AppPagination.vue';
-    import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
+    // import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
     import TodoList from '@/components/TodoList.vue';
+    import ToastBox from '@/components/ToastBox.vue'
     import axios from 'axios'
+    import {useToast} from '@/composables/toast.js';
+    import {useRouter} from 'vue-router';
 
     export default {
         components: {
             AppTitle,
             ErrorBox,
             AppPagination,
-            TodoSimpleForm,
+            // TodoSimpleForm,
             TodoList,
+            ToastBox,
+
         },
 
         setup() {
+            const router = useRouter();
+            //할일 생성 페이지로 이동
+            const moveToCreate = () => {
+                router.push({
+                    name: 'TodoCreate'
+                })
+            }
 
             // 타이틀
             const today = ref('Todo List');
@@ -78,6 +97,41 @@
                 // 총 게시물 / 페이지 당 출력 수 (반올림)
                 return Math.ceil(totalTodos.value / limit);
             })
+
+            // 컴포넌트 해제
+            // const toastTimeout = ref(null);
+            // onUnmounted( () => { 
+                // 타이머 실행을 막아준다. 메모리 절약  
+            //     clearTimeout(toastTimeout);
+            // });
+
+            //toastBox 관련
+            // const showToast = ref(false);
+            // const toastMessage = ref('');
+            // const toastAlertType = ref('');
+
+            // 메시지가 전달되면 toastBox 보여주기
+        //     const triggerToast = (message = '', type = 'success') => {
+        //         toastMessage.value = message;
+        //         showToast.value = true;
+        //         toastAlertType.value = type;
+
+        //         toastTimeout.value = setTimeout(() => {
+        //             // alert('Timer');
+        //             // console.log('타이머실행');
+        //             toastMessage.value='';
+        //             toastAlertType.value = '';
+        //             showToast.value = false;
+        //         }, 3000)
+        // }
+
+            //ToastBox 관련
+            const {
+                showToast,
+                toastMessage,
+                triggerToast,
+                toastAlertType
+            } = useToast();
 
             // 할일 검색 관련 
             const searchText = ref('');
@@ -123,7 +177,7 @@
                 } catch (err) {
                     console.log(err);
                     error.value = "자료를 불러오는데 실패했습니다."
-
+                    triggerToast('자료를 불러오는데 실패했습니다.', 'danger');
                 }
             }
 
@@ -149,6 +203,7 @@
                 } catch (err) {
                     console.log(err);
                     error.value = "서버를 확인해 주세요.";
+                    triggerToast('서버를 확인해 주세요.', 'danger');
                 }
 
             }
@@ -164,11 +219,15 @@
                         complete: checked
                     });
                     // 웹브라우저상의 todo 화면 표현
-                    todos.value[index].complete = !todos.value[index].complete
+                    // todos.value[index].complete = !todos.value[index].complete
+                    todos.value[index].complete = checked;
+
+                    triggerToast('상태를 변경하였습니다.', 'success');
 
                 } catch (err) {
                     console.log(err);
                     error.value = "업데이트에 실패했습니다.";
+                    triggerToast('업데이트에 실패했습니다.', 'danger');
                 }
             }
 
@@ -182,11 +241,14 @@
                 try {
                     await axios.delete('http://localhost:3000/todos/' + id);
 
+                    triggerToast('목록을 삭제하였습니다.', 'success');
+
                     getTodos(currentPage.value);
 
                 } catch (err) {
                     console.log(err);
                     error.value = "삭제에 실패했습니다."
+                    triggerToast('삭제에 실패했습니다.', 'danger');
                 }
             }
 
@@ -205,6 +267,12 @@
                 currentPage,
                 searchTodo,
                 today,
+                showToast,
+                toastMessage,
+                toastAlertType,
+                triggerToast,
+                moveToCreate
+                // toastTimeout
             }
         }
     }
