@@ -1,6 +1,6 @@
 <template>
 
-<div class="container">
+<div class="container" style="opacity : 0.2">
 
     <!-- 타이틀 -->
     <div class="d-flex justify-content-between mt-3 mb-3">
@@ -234,9 +234,14 @@
             const deleteTodo = async (index) => {
 
                 error.value = '';
+                // 아래 문장은 순서 번호를 이용해서 목록에서 id를 추출
+                // 즉 아이디를 알아내기 위한 과정
+                // const id = todos.value[index].id;
 
-                const id = todos.value[index].id;
-                console.log(id);
+                // 아래 문장은 직접 id를 받아오는 경우
+                const id = index;
+                // console.log(index);
+                // console.log(id);
 
                 try {
                     await axios.delete('http://localhost:3000/todos/' + id);

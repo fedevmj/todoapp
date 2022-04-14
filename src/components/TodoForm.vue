@@ -12,7 +12,8 @@
                 <div class="form-group">
                     <label>제목</label>
                     <input type="text" class="form-control" v-model="todo.subject">
-                    <div v-if="subjectError" style="color:red">{{subjectError}}</div>
+                    <!-- <div v-if="subjectError" style="color:red">{{subjectError}}</div> -->
+                    <div v-if="subjectError" class="red-text bold-text">{{subjectError}}</div>
                 </div>
 
             </div>
@@ -49,7 +50,12 @@
 
     </form>
 
-    <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+    <!-- vue에서 제공하는 태그(컴포넌트) -->
+    <Transition name="fade">
+        <!-- 안내창 -->
+        <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+
+    </Transition>
 
     <!-- 생명주기 알아보기 -->
     <!-- <div id="test">Hello</div> -->
@@ -301,4 +307,34 @@
 </script>
 
 <style>
+    .red-text{
+        /* 다른데서도 적용 가능 */
+        color: red;
+    }
+</style>
+
+<style scoped>
+    .bold-text{
+        /* 해당 component에서만 사용 가능 */
+        /* .bold-text[data-v-09eb515a] 대괄호 안은 vue에서 생성된 속성 선택자 */
+        /* stylesheet보다 강력하기 때문에 충돌이 날 때 사용하면 좋음 */
+        font-weight: 900;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active{
+        transition: all 0.5s ease;
+    }
+    
+    .fade-enter-from,
+    .fade-leave-to{
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    .fade-enter-to,
+    .fade-leave-from{
+        opacity: 1;
+        transform: translateY(0);
+    }
 </style>
