@@ -1,6 +1,7 @@
 <template>
 
-<div class="container" style="opacity : 0.2">
+<!-- <div class="container" style="opacity : 0.2"> -->
+    <div class="container">
 
     <!-- 타이틀 -->
     <div class="d-flex justify-content-between mt-3 mb-3">

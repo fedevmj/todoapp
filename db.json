@@ -16,11 +16,6 @@
       "id": 6
     },
     {
-      "subject": "\b웹디실기연습",
-      "complete": true,
-      "id": 7
-    },
-    {
       "subject": "Vue.js 강의듣기",
       "complete": false,
       "id": 8
@@ -36,7 +31,7 @@
       "id": 11
     },
     {
-      "subject": "효율적으로 공부하기",
+      "subject": "효율적으로 많이 공부하기",
       "complete": false,
       "id": 12
     },
@@ -47,9 +42,15 @@
       "id": 13
     },
     {
-      "subject": "입사지원서 작성",
+      "subject": "밥 4인분 미리 만들기",
       "complete": false,
-      "body": "4/21 제출",
+      "body": "",
+      "id": 14
+    },
+    {
+      "subject": "고양이 화장실 청소",
+      "complete": false,
+      "body": "",
       "id": 15
     }
   ]

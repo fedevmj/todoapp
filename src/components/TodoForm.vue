@@ -9,12 +9,17 @@
             <!-- 제목 입력 및 수정창 -->
             <div class="col-6">
 
-                <div class="form-group">
-                    <label>제목</label>
-                    <input type="text" class="form-control" v-model="todo.subject">
-                    <!-- <div v-if="subjectError" style="color:red">{{subjectError}}</div> -->
-                    <div v-if="subjectError" class="red-text bold-text">{{subjectError}}</div>
-                </div>
+                <InputView
+                    label="제목"
+                    :err="subjectError"
+                    v-model:subject="todo.subject"
+                />
+                <!-- v-model:props명='값' -->
+                <!-- Inputview 파일에서 update:라고 적어주면 자동으로 emit이 된다. -->
+                <!-- @update-subject="updateTodoSubject" -->
+                <!-- v-model:subject="todo.subject" -->
+
+                <!-- :props명="변수전달" / props명="그냥 값" -->
 
             </div>
 
@@ -66,15 +71,17 @@
     import {useRoute,useRouter} from 'vue-router'
     import axios from 'axios';
     // import {computed,ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted} from 'vue';
-    import {computed,ref,} from 'vue';
+    import {computed,ref, onUpdated} from 'vue';
     import _ from 'lodash';
     import ToastBox from '@/components/ToastBox.vue'
     import {useToast} from '@/composables/toast.js';
+    import InputView from '@/components/InputView.vue'
 
 
     export default {
         components: {
-            ToastBox
+            ToastBox,
+            InputView
         },
         props: {
             editing: {
@@ -84,6 +91,10 @@
         },
         emits: ['update-todo', 'new-todo'],
         setup(props, {emit}) {
+
+            onUpdated( () => {
+                console.log(todo.value.subject);
+            })
             // 생명주기코드(lifecycle hooks)
             // 화면에 보여지기 전 단계 (등록 전 단계)
             // onBeforeMount( () => {
@@ -161,6 +172,10 @@
         //         showToast.value = false;
         //     }, 3000)
         // }
+
+            // const updateTodoSubject = (txt) => {
+            //     todo.value.subject = txt;
+            // }
 
             const getTodo = async () => {
                 loading.value = true;
@@ -299,7 +314,8 @@
                 toastMessage,
                 toastAlertType,
                 triggerToast,
-                subjectError
+                subjectError,
+                // updateTodoSubject
             }
 
         }
@@ -307,20 +323,11 @@
 </script>
 
 <style>
-    .red-text{
-        /* 다른데서도 적용 가능 */
-        color: red;
-    }
+
 </style>
 
 <style scoped>
-    .bold-text{
-        /* 해당 component에서만 사용 가능 */
-        /* .bold-text[data-v-09eb515a] 대괄호 안은 vue에서 생성된 속성 선택자 */
-        /* stylesheet보다 강력하기 때문에 충돌이 날 때 사용하면 좋음 */
-        font-weight: 900;
-    }
-
+    
     .fade-enter-active,
     .fade-leave-active{
         transition: all 0.5s ease;

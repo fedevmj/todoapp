@@ -4,23 +4,24 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Todo Delete</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <!-- Todo Delete -->
+                        <!-- 타이틀 slot -->
+                        <slot name="title"></slot>
+                        </h5>
                     <button type="button" class="close">
                         <span @click="onClose">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    내용을 삭제하시겠습니까? 
+                    <!-- 경고창 본문 slot -->
+                    <slot name="body"></slot>
+                    <!-- 내용을 삭제하시겠습니까?  -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" 
-                    class="btn btn-secondary"
-                    @click="onClose"
-                    >Close</button>
-                    <button type="button" 
-                    class="btn btn-danger"
-                    @click="onDelete"
-                    >Delete</button>
+                    <!-- 하단버튼slot -->
+                    <slot name="footer"></slot>
+
                 </div>
             </div>
         </div>
@@ -29,18 +30,15 @@
 
 <script>
     export default {
-        emits: ['close', 'delete'],
+        // 여기 close는 상단 X 표시에 사용되기 때문에 이동시키지 X
+        emits: ['close-win'],
         setup(props, {emit}){
             const onClose = () => {
                 console.log('닫기');
-                emit('close');
+                emit('close-win');
             };
-            const onDelete = () => {
-                emit('delete');
-            }
             return {
                 onClose,
-                onDelete
             }
         }
     }   
