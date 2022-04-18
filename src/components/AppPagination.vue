@@ -18,12 +18,14 @@
 </template>
 
 <script>
+    import { getCurrentInstance } from 'vue';
     export default {
         props: ['currentpage', 'pagenumber'],
-        setup(props, context){
+        setup(){
+            const { emit } = getCurrentInstance();
             const getTodos = (index) => {
                 console.log(index);
-                context.emit('showPage', index);
+                emit('showPage', index);
             }
             return{
                 getTodos

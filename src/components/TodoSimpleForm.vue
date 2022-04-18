@@ -22,13 +22,15 @@
 
 <script>
     import {ref} from 'vue';
+    import { getCurrentInstance } from 'vue';
     // js 코딩 장소
     export default {
         emits: ['todo-insert'],
         // props와 context로 상위 컴포넌트(app.vue)와 연결
         // context는 app.vue 그 자체를 가리킴
         // 이 자료에는 context 중에서도 {emit}만 쓴다고 돼 있고 아래에도 context.emit 아니라 emit만 적혀있음
-        setup(props, {emit}) {
+        setup() {
+            const { emit } = getCurrentInstance();
             // html에서 사용할 내용들
             // 추가할 할일
             const add_todos = ref('');

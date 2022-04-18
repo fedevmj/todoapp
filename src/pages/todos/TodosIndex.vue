@@ -54,7 +54,8 @@
     // import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
     import TodoList from '@/components/TodoList.vue';
     import ToastBox from '@/components/ToastBox.vue'
-    import axios from 'axios'
+    // import axios from 'axios'
+    import axios from '@/axios.js'
     import {useToast} from '@/composables/toast.js';
     import {useRouter} from 'vue-router';
 
@@ -163,7 +164,7 @@
                     //서버에 자료 요청 진행 후 결과를 res로 받는다. 
                     // &_ 쓰는 것 잊어버리지 말 것!
                     const res = await axios.get(
-                        `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
+                        `todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}&_sort=id&_order=desc`
                         );
 
                     totalTodos.value = res.headers['x-total-count'];
@@ -192,7 +193,7 @@
 
                 try {
                     // const res = 
-                    await axios.post('http://localhost:3000/todos', {
+                    await axios.post('todos', {
                         // id는 자동으로 생성
                         // id: ,
                         subject: add_todos.subject,
@@ -215,7 +216,7 @@
                 const id = todos.value[index].id;
                 try {
                     // 서버 DB 업데이트
-                    await axios.patch('http://localhost:3000/todos/' + id, {
+                    await axios.patch('todos/' + id, {
                         // complete: !todos.value[index].complete
                         complete: checked
                     });
@@ -245,7 +246,7 @@
                 // console.log(id);
 
                 try {
-                    await axios.delete('http://localhost:3000/todos/' + id);
+                    await axios.delete('todos/' + id);
 
                     triggerToast('목록을 삭제하였습니다.', 'success');
 

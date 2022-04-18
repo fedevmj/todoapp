@@ -11,11 +11,6 @@
       "id": 4
     },
     {
-      "subject": "집청소하기",
-      "complete": false,
-      "id": 6
-    },
-    {
       "subject": "Vue.js 강의듣기",
       "complete": false,
       "id": 8
@@ -42,16 +37,16 @@
       "id": 13
     },
     {
-      "subject": "밥 4인분 미리 만들기",
-      "complete": false,
-      "body": "",
-      "id": 14
-    },
-    {
-      "subject": "고양이 화장실 청소",
+      "subject": "고양이 화장실 청소하기",
       "complete": false,
       "body": "",
       "id": 15
+    },
+    {
+      "subject": "입사지원서 작성",
+      "complete": false,
+      "body": "이번주 목요일까지",
+      "id": 16
     }
   ]
 }

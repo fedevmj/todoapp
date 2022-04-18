@@ -59,6 +59,7 @@
     import {ref} from 'vue'
     import DeleteModal from '@/components/DeleteModal.vue'
     import ListView from '@/components/ListView.vue'
+    import { getCurrentInstance } from 'vue';
 
     export default {
         components: {
@@ -76,7 +77,8 @@
 
         emits: ['toggle-todo', 'delete-todo'],
 
-        setup(props, context) {
+        setup() {
+            const { emit } = getCurrentInstance();
             const router = useRouter();
 
             //실제 삭제될 id를 보관해 둠
@@ -98,12 +100,12 @@
 
             const toggleTodo = (index, event) => {
                 // console.log(index);
-                context.emit('toggle-todo', index, event.target.checked);
+                emit('toggle-todo', index, event.target.checked);
             };
 
             const deleteTodo = () => {
                 console.log(todoDeleteId.value);
-                context.emit('delete-todo', todoDeleteId.value);
+                emit('delete-todo', todoDeleteId.value);
                 // 삭제버튼 클릭 시 저장해 뒀던 todoDeleteId.value를 활용
                 // 해당하는 todo의 id 값
                 showModal.value = false;

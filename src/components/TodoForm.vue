@@ -69,7 +69,8 @@
 
 <script>
     import {useRoute,useRouter} from 'vue-router'
-    import axios from 'axios';
+    // import axios from 'axios';
+    import axios from '@/axios.js'
     // import {computed,ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted} from 'vue';
     import {computed,ref, onUpdated} from 'vue';
     import _ from 'lodash';
@@ -77,7 +78,7 @@
     import {useToast} from '@/composables/toast.js';
     import InputView from '@/components/InputView.vue'
 
-
+    import { getCurrentInstance } from 'vue';
     export default {
         components: {
             ToastBox,
@@ -90,8 +91,9 @@
             }
         },
         emits: ['update-todo', 'new-todo'],
-        setup(props, {emit}) {
+        setup(props) {
 
+            const { emit } = getCurrentInstance();
             onUpdated( () => {
                 console.log(todo.value.subject);
             })
@@ -180,7 +182,7 @@
             const getTodo = async () => {
                 loading.value = true;
                 try{
-                    const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
+                    const res = await axios.get(`todos/${todoId}`);
                     // console.log(res);
                     // res.data를 그대로 전달하면 주소를 복사한 것이므로 원본도 같이 참조가 되기 때문에 복사본이라고 할 수 없다.
                     // 내용만 복사하기 위해서 spread 연산자 사용
@@ -266,7 +268,7 @@
 
                     if(props.editing){
                         // 편집으로 진입한 경우
-                        res = await axios.put(`http://localhost:3000/todos/${todoId}`, data );
+                        res = await axios.put(`todos/${todoId}`, data );
 
                     // console.log(res);
                     // 원본이 갱신 되었으므로 이를 반영하여 새로 저장해 줌.
@@ -279,7 +281,7 @@
                     
                     }else{
                         //신규 등록인 경우
-                        res = await axios.post(`http://localhost:3000/todos`, data);
+                        res = await axios.post(`todos`, data);
                         emit('new-todo', {})
                         triggerToast('데이터 저장에 성공하였습니다.', 'success');
 

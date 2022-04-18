@@ -29,10 +29,12 @@
 </template>
 
 <script>
+    import { getCurrentInstance } from 'vue';
     export default {
         // 여기 close는 상단 X 표시에 사용되기 때문에 이동시키지 X
         emits: ['close-win'],
-        setup(props, {emit}){
+        setup(){
+            const { emit } = getCurrentInstance();
             const onClose = () => {
                 console.log('닫기');
                 emit('close-win');

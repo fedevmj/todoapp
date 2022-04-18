@@ -8,8 +8,6 @@
         :value="subject"
         @input="onInput">
         
-
-
         <div v-if="err" 
         class="red-text bold-text">
         {{err}}
@@ -20,6 +18,7 @@
 </template>
 
 <script>
+    import { getCurrentInstance } from 'vue';
     export default {
         props: {
             label: {
@@ -36,8 +35,9 @@
             },
         },
         emits: ['update-subject'],
-            setup(props, {emit}){
-                const onInput = () => {
+            setup(){
+                const { emit } = getCurrentInstance();
+                const onInput = (event) => {
                     emit('update:subject', event.target.value);
                 }
                 return{
