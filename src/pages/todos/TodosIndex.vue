@@ -34,7 +34,7 @@
     <AppPagination :currentpage="currentPage" :pagenumber="numberfOfpages" @showPage="getTodos" />
 
     <!-- 안내창 -->
-    <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+    <!-- <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/> -->
 
 </div>
 </template>
@@ -53,7 +53,7 @@
     import AppPagination from '@/components/AppPagination.vue';
     // import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
     import TodoList from '@/components/TodoList.vue';
-    import ToastBox from '@/components/ToastBox.vue'
+    // import ToastBox from '@/components/ToastBox.vue'
     // import axios from 'axios'
     import axios from '@/axios.js'
     import {useToast} from '@/composables/toast.js';
@@ -66,7 +66,7 @@
             AppPagination,
             // TodoSimpleForm,
             TodoList,
-            ToastBox,
+            // ToastBox,
 
         },
 
@@ -84,6 +84,7 @@
 
             // 할일 목록(배열) 저장
             const todos = ref([]);
+            console.log(todos)
 
             // 에러메시지
             const error = ref('');
@@ -212,8 +213,12 @@
 
             const toggleEvent = async (index, checked) => {
 
+                console.log(index);
+                console.log(checked);
+
                 error.value = '';
                 const id = todos.value[index].id;
+
                 try {
                     // 서버 DB 업데이트
                     await axios.patch('todos/' + id, {
@@ -242,6 +247,7 @@
 
                 // 아래 문장은 직접 id를 받아오는 경우
                 const id = index;
+                
                 // console.log(index);
                 // console.log(id);
 

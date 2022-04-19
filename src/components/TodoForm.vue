@@ -56,11 +56,11 @@
     </form>
 
     <!-- vue에서 제공하는 태그(컴포넌트) -->
-    <Transition name="fade">
+    <!-- <Transition name="fade"> -->
         <!-- 안내창 -->
-        <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/>
+        <!-- <ToastBox v-if="showToast" :message="toastMessage" :type="toastAlertType"/> -->
 
-    </Transition>
+    <!-- </Transition> -->
 
     <!-- 생명주기 알아보기 -->
     <!-- <div id="test">Hello</div> -->
@@ -74,14 +74,14 @@
     // import {computed,ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted} from 'vue';
     import {computed,ref, onUpdated} from 'vue';
     import _ from 'lodash';
-    import ToastBox from '@/components/ToastBox.vue'
+    // import ToastBox from '@/components/ToastBox.vue'
     import {useToast} from '@/composables/toast.js';
     import InputView from '@/components/InputView.vue'
 
-    import { getCurrentInstance } from 'vue';
+    // import { getCurrentInstance } from 'vue';
     export default {
         components: {
-            ToastBox,
+            // ToastBox,
             InputView
         },
         props: {
@@ -90,10 +90,11 @@
                 default: false
             }
         },
-        emits: ['update-todo', 'new-todo'],
+        // emits: ['update-todo', 'new-todo'],
+        // emits: ['new-todo'],
         setup(props) {
 
-            const { emit } = getCurrentInstance();
+            // const { emit } = getCurrentInstance();
             onUpdated( () => {
                 console.log(todo.value.subject);
             })
@@ -254,7 +255,6 @@
                 if(!todo.value.subject){
                     subjectError.value = '제목을 입력해 주세요';
                     triggerToast('제목을 입력해 주세요.', 'danger')
-
                     return;
                 }
 
@@ -275,25 +275,30 @@
                     originalTodo.value = {
                         ...res.data
                     };
-                    emit('update-todo', {})
+                    // TodoForm에서 alert Box 띄웠던 것을 목록으로 이동.
+                    // emit('update-todo', {})
                     triggerToast('데이터 업데이트에 성공하였습니다.', 'success')
 
                     
                     }else{
                         //신규 등록인 경우
                         res = await axios.post(`todos`, data);
-                        emit('new-todo', {})
-                        triggerToast('데이터 저장에 성공하였습니다.', 'success');
-
-                    }
+                        // emit('new-todo', {})
 
                         //  제목, 내용을 비운다.
                         todo.value.subject = '';
                         todo.value.body = '';
-                        // 목록으로 돌아간다.
+
+                        triggerToast('데이터 저장에 성공하였습니다.', 'success');
+
+                    }
+
+                        // 신규 등록인 경우에만 목록으로 돌아간다.
+                        if(!props.editing){
                         router.push({
                             name: 'todos'
                         });
+                        }
 
                 }catch(error){
                     console.log(error);
@@ -330,7 +335,7 @@
 
 <style scoped>
     
-    .fade-enter-active,
+    /* .fade-enter-active,
     .fade-leave-active{
         transition: all 0.5s ease;
     }
@@ -345,5 +350,5 @@
     .fade-leave-from{
         opacity: 1;
         transform: translateY(0);
-    }
+    } */
 </style>

@@ -6,7 +6,7 @@
     
     <ListView :items="todoList">
 
-        <template #default="{item}">
+        <template #default="{item, index}">
         <div 
         @click="moveToPage(item.id)"
         class="card-body pd-2 d-flex" 
@@ -99,7 +99,8 @@
             }
 
             const toggleTodo = (index, event) => {
-                // console.log(index);
+                console.log(index);
+                console.log(event);
                 emit('toggle-todo', index, event.target.checked);
             };
 

@@ -1,18 +1,13 @@
 {
   "todos": [
     {
-      "subject": "클론코드하기",
-      "complete": false,
-      "id": 3
-    },
-    {
       "subject": "오디오어학당듣기",
       "complete": true,
       "id": 4
     },
     {
       "subject": "Vue.js 강의듣기",
-      "complete": false,
+      "complete": true,
       "id": 8
     },
     {
@@ -26,27 +21,22 @@
       "id": 11
     },
     {
-      "subject": "효율적으로 많이 공부하기",
-      "complete": false,
-      "id": 12
-    },
-    {
       "subject": "\b고양이들이랑 재밌게 놀기!",
-      "complete": false,
+      "complete": true,
       "body": "신나고 즐겁게 행복하게 놀기!",
       "id": 13
     },
     {
-      "subject": "고양이 화장실 청소하기",
+      "subject": "포트폴리오 템플릿",
       "complete": false,
-      "body": "",
-      "id": 15
+      "body": "이번주 금요일 전까지 확인",
+      "id": 17
     },
     {
       "subject": "입사지원서 작성",
       "complete": false,
-      "body": "이번주 목요일까지",
-      "id": 16
+      "body": "",
+      "id": 18
     }
   ]
 }

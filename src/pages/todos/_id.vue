@@ -1,7 +1,10 @@
 <template>
   <h1>Edit Todo
   </h1>
-  <TodoForm :editing="true" @update-todo="updateTodo"/>
+  <TodoForm :editing="true" />
+  <!-- TodoForm 안에 있었음 -->
+  <!-- @update-todo="updateTodo" -->
+
 </template>
 
 <script>
@@ -11,7 +14,7 @@ export default {
     components: {
         TodoForm
     }, 
-    emits: ['update-todo-toast'],
+    // emits: ['update-todo-toast'],
     setup() {
       const { emit } = getCurrentInstance();
       const updateTodo = () => {

@@ -1,17 +1,17 @@
 <template>
     <h1>HomeIndex</h1>
-    {{ count }}
-    <button @click="count++">Increment</button>
+    <!-- {{ count }}
+    <button @click="count++">Increment</button> -->
 </template>
 
 <script>
-    import { useCount } from '@/composables/count.js'
+    // import { useCount } from '@/composables/count.js'
     export default {
         setup(){
             // 분해해서 사용한다. 
-            const { count } = useCount();
+            // const { count } = useCount();
             return{
-                count
+                // count
             }
         }
     }
