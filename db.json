@@ -16,11 +16,6 @@
       "id": 9
     },
     {
-      "subject": "부트스트랩 공부하기",
-      "complete": false,
-      "id": 11
-    },
-    {
       "subject": "\b고양이들이랑 재밌게 놀기!",
       "complete": true,
       "body": "신나고 즐겁게 행복하게 놀기!",
@@ -28,7 +23,7 @@
     },
     {
       "subject": "포트폴리오 템플릿",
-      "complete": false,
+      "complete": true,
       "body": "이번주 금요일 전까지 확인",
       "id": 17
     },
